@@ -13,6 +13,7 @@ function renderList(movie) {
 
   const card = document.createElement("div")
   card.id = movie.id
+  card.classList.add("card")
 
   const img = document.createElement("img")
   img.setAttribute("src", movie.image)
