@@ -1,11 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("dom loaded")
   getList()
+  // renderFirstDetail()
+  getDetail("2baf70d1-42bb-4437-b551-e5fed5a87abe")
 })
 
 // Query Selectors ----------------------------------
 
-// Event Listeners ----------------------------------
+// Event Handlers -----------------------------------
+function handleClick(e) {
+  // console.log("clicked")
+  // console.log(e.target.parentNode)
+  let id = e.target.parentNode.id
+  // console.log(id)
+  getDetail(id)
+}
 
 // Renderings ---------------------------------------
 function renderList(movie) {
@@ -14,6 +23,13 @@ function renderList(movie) {
   const card = document.createElement("div")
   card.id = movie.id
   card.classList.add("card")
+
+  const rating = document.createElement("div")
+  rating.id = "rating"
+  const p = document.createElement("p")
+  p.innerText = `☆ ${movie.rt_score}` // ★ or ☆ ?
+  rating.appendChild(p)
+  card.appendChild(rating)
 
   const img = document.createElement("img")
   img.setAttribute("src", movie.image)
@@ -27,15 +43,62 @@ function renderList(movie) {
   h4.innerText = `${movie.release_date} • ${movie.director}` // | or • ?
   card.appendChild(h4)
 
-  const rating = document.createElement("div")
-  const p = document.createElement("p")
-  p.innerText = `☆ ${movie.rt_score}` // ★ or ☆ ?
-  rating.appendChild(p)
-  card.appendChild(rating)
-
-  console.log(card)
+  // console.log(card)
+  card.addEventListener("click", handleClick)
   cardsContainer.appendChild(card)
 }
+
+function renderDetail(movie) {
+  const detailContainer = document.querySelector("#detail-container")
+  
+  const rating = document.createElement("div")
+  rating.id = "rating"
+  const p = document.createElement("p")
+  p.innerText = `☆ ${movie.rt_score}`
+  rating.appendChild(p)
+  detailContainer.appendChild(rating)
+
+  const banner = document.createElement("img")
+  banner.setAttribute("src", movie.movie_banner)
+  detailContainer.appendChild(banner)
+
+  const h2 = document.createElement("h2")
+  h2.innerText = movie.title
+  detailContainer.appendChild(h2)
+
+  const infoStrip = document.createElement("div")
+  infoStrip.classList.add("info-strip")
+  const date = document.createElement("h4")
+  date.innerText = movie.release_date
+  infoStrip.appendChild(date)
+  const director = document.createElement("h4")
+  director.innerText = movie.director
+  infoStrip.appendChild(director)
+  const runTime = document.createElement("h4")
+  runTime.innerText = `${movie.running_time} min`
+  infoStrip.appendChild(runTime)
+  detailContainer.appendChild(infoStrip)
+  
+  const japaneseStrip = document.createElement("div")
+  japaneseStrip.classList.add("japanese-strip")
+  const kanji = document.createElement("h5")
+  kanji.innerText = movie.original_title
+  japaneseStrip.appendChild(kanji)
+  const romanji = document.createElement("h5")
+  romanji.innerText = movie.original_title_romanised
+  japaneseStrip.appendChild(romanji)
+  detailContainer.appendChild(japaneseStrip)
+
+  const description = document.createElement("p")
+  description.innerText = movie.description
+  detailContainer.appendChild(description)
+}
+// function renderFirstDetail() {
+//   setTimeout(() => {
+//     const firstId = document.getElementById("cards-container").firstElementChild.id
+//     getDetail(firstId)
+//   },400)
+// }
 
 // Fetch Requests -----------------------------------
 function getList() {
@@ -47,7 +110,27 @@ function getList() {
   })
   .then(response => response.json())
   .then(movieData => {
-    console.log(movieData)
+    // console.log(movieData)
     movieData.forEach(movie => renderList(movie))
   })
+}
+
+function getDetail(id) {
+  fetch(`http://ghibliapi.herokuapp.com/films/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(res => res.json())
+  .then(movieData => {
+    resetDetail()
+    renderDetail(movieData)
+  })
+}
+function resetDetail() {
+  const detail = document.querySelector("#detail-container")
+  while (detail.firstChild) {
+    detail.removeChild(detail.firstChild)
+  }
 }
