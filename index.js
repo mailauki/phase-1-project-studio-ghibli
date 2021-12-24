@@ -12,7 +12,8 @@ let checked;
 function handleClick(e) {
   // console.log("clicked")
   // console.log(e.target.parentNode)
-  let id = e.target.parentNode.id
+  console.log(e.currentTarget)
+  let id = e.currentTarget.id
   // console.log(id)
   getDetail(id)
 }
