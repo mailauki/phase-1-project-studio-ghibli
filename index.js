@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 // Query Selectors ----------------------------------
+let checked;
 
 // Event Handlers -----------------------------------
 function handleClick(e) {
@@ -14,6 +15,16 @@ function handleClick(e) {
   let id = e.target.parentNode.id
   // console.log(id)
   getDetail(id)
+}
+
+function handleCheck(e) {
+  console.log("clicked")
+  // console.log(e.target.parentNode.querySelector("button"))
+  console.log(e.target.parentNode)
+  if (e.target.parentNode.id === "checked") {
+    e.target.parentNode.id = ""
+  }
+  else {e.target.parentNode.id = "checked"}
 }
 
 // Renderings ---------------------------------------
@@ -31,16 +42,24 @@ function renderList(movie) {
   rating.appendChild(p)
   card.appendChild(rating)
 
-  const div = document.createElement("div")
-  div.id = "checkbox"
-  const checkbox = document.createElement("input")
-  checkbox.setAttribute("type", "checkbox")
-  div.appendChild(checkbox)
-  card.appendChild(div)
-
   const img = document.createElement("img")
   img.setAttribute("src", movie.image)
   card.appendChild(img)
+
+  const div = document.createElement("div")
+  div.classList.add("checkbox")
+  div.id = movie.id
+  // const checkbox = document.createElement("input")
+  // checkbox.setAttribute("type", "checkbox")
+  const checkbox = document.createElement("button")
+  const check = document.createElement("img")
+  check.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/61/61141.png")
+  checkbox.appendChild(check)
+  div.appendChild(checkbox)
+  card.appendChild(div)
+
+  div.addEventListener("click", handleCheck) // make checkbox checked if clicked here too
+  // checkbox.addEventListener("change", () => console.log("checked"))
   
   const h3 = document.createElement("h3")
   h3.innerText = movie.title
@@ -65,19 +84,27 @@ function renderDetail(movie) {
   rating.appendChild(p)
   detailContainer.appendChild(rating)
 
-  const div = document.createElement("div")
-  div.id = "checkbox"
-  const span = document.createElement("span")
-  span.innerText = "Watched "
-  div.appendChild(span)
-  const checkbox = document.createElement("input")
-  checkbox.setAttribute("type", "checkbox")
-  div.appendChild(checkbox)
-  detailContainer.appendChild(div)
-
   const banner = document.createElement("img")
   banner.setAttribute("src", movie.movie_banner)
   detailContainer.appendChild(banner)
+
+  const div = document.createElement("div")
+  div.classList.add("checkbox")
+  div.id = movie.id
+  const span = document.createElement("span")
+  span.innerText = "Watched "
+  div.appendChild(span)
+  // const checkbox = document.createElement("input")
+  // checkbox.setAttribute("type", "checkbox")
+  const checkbox = document.createElement("button")
+  const check = document.createElement("img")
+  check.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/61/61141.png")
+  checkbox.appendChild(check)
+  div.appendChild(checkbox)
+  detailContainer.appendChild(div)
+
+  div.addEventListener("click", handleCheck) // make checkbox checked if clicked here too
+  // checkbox.addEventListener("click", handleCheck)
 
   const h2 = document.createElement("h2")
   h2.innerText = movie.title
@@ -110,12 +137,6 @@ function renderDetail(movie) {
   description.innerText = movie.description
   detailContainer.appendChild(description)
 }
-// function renderFirstDetail() {
-//   setTimeout(() => {
-//     const firstId = document.getElementById("cards-container").firstElementChild.id
-//     getDetail(firstId)
-//   },400)
-// }
 
 // Fetch Requests -----------------------------------
 function getList() {
