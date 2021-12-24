@@ -19,12 +19,12 @@ function handleClick(e) {
 
 function handleCheck(e) {
   console.log("clicked")
-  // console.log(e.target.parentNode.querySelector("button"))
-  console.log(e.target.parentNode)
-  if (e.target.parentNode.id === "checked") {
-    e.target.parentNode.id = ""
+  const checkedId = e.currentTarget.querySelector("button")
+  console.log(checkedId)
+  if (checkedId.id === "checked") {
+    checkedId.id = ""
   }
-  else {e.target.parentNode.id = "checked"}
+  else {checkedId.id = "checked"}
 }
 
 // Renderings ---------------------------------------
@@ -49,8 +49,6 @@ function renderList(movie) {
   const div = document.createElement("div")
   div.classList.add("checkbox")
   div.id = movie.id
-  // const checkbox = document.createElement("input")
-  // checkbox.setAttribute("type", "checkbox")
   const checkbox = document.createElement("button")
   const check = document.createElement("img")
   check.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/61/61141.png")
@@ -94,8 +92,6 @@ function renderDetail(movie) {
   const span = document.createElement("span")
   span.innerText = "Watched "
   div.appendChild(span)
-  // const checkbox = document.createElement("input")
-  // checkbox.setAttribute("type", "checkbox")
   const checkbox = document.createElement("button")
   const check = document.createElement("img")
   check.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/61/61141.png")
