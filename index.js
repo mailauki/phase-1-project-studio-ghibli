@@ -31,6 +31,13 @@ function renderList(movie) {
   rating.appendChild(p)
   card.appendChild(rating)
 
+  const div = document.createElement("div")
+  div.id = "checkbox"
+  const checkbox = document.createElement("input")
+  checkbox.setAttribute("type", "checkbox")
+  div.appendChild(checkbox)
+  card.appendChild(div)
+
   const img = document.createElement("img")
   img.setAttribute("src", movie.image)
   card.appendChild(img)
@@ -40,7 +47,7 @@ function renderList(movie) {
   card.appendChild(h3)
 
   const h4 = document.createElement("h4")
-  h4.innerText = `${movie.release_date} • ${movie.director}` // | or • ?
+  h4.innerText = `${movie.release_date} • ${movie.director}`
   card.appendChild(h4)
 
   // console.log(card)
@@ -57,6 +64,16 @@ function renderDetail(movie) {
   p.innerText = `☆ ${movie.rt_score}`
   rating.appendChild(p)
   detailContainer.appendChild(rating)
+
+  const div = document.createElement("div")
+  div.id = "checkbox"
+  const span = document.createElement("span")
+  span.innerText = "Watched "
+  div.appendChild(span)
+  const checkbox = document.createElement("input")
+  checkbox.setAttribute("type", "checkbox")
+  div.appendChild(checkbox)
+  detailContainer.appendChild(div)
 
   const banner = document.createElement("img")
   banner.setAttribute("src", movie.movie_banner)
