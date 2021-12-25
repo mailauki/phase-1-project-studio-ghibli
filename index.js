@@ -1,8 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("dom loaded")
   getList()
-  // renderFirstDetail()
   getDetail("2baf70d1-42bb-4437-b551-e5fed5a87abe")
+
+  const filter = document.querySelector("#filter")
+  const select = filter.querySelector("select")
+  select.addEventListener("change", handleFilter)
 })
 
 // Query Selectors ----------------------------------
@@ -10,33 +13,36 @@ let checked;
 
 // Event Handlers -----------------------------------
 function handleClick(e) {
-  // console.log("clicked")
-  // console.log(e.target.parentNode)
-  // console.log(e.currentTarget)
   let id = e.currentTarget.id
-  // console.log(id)
   getDetail(id)
 }
 
 function handleCheck(e) {
-  // console.log("clicked")
   const checkedId = e.currentTarget.querySelector("button")
-  // console.log(checkedId)
-  // console.log(e.currentTarget.id)
   updateWatched(e.currentTarget.id)
-  // if (checkedId.id === "checked") {
-  //   checkedId.id = ""
-  //   checked = false
-  // }
-  // else {
-  //   checkedId.id = "checked"
-  //   checked = true
-  // }
   if(checked === true) {
     checkedId.id = "checked"
   }
   else {checkedId.id = ""}
   console.log(checked)
+}
+
+function handleFilter(e) {
+  if(e.target.value === "watched") {
+    console.log("rerender list based on checked")
+    const cards = document.querySelectorAll(".card")
+    const cardsArray = [...cards]
+    cardsArray.forEach(card => {
+      if(card.querySelector("button").id !== "checked") {
+        card.style = "display: none;"
+      }
+    })
+  }
+  else {
+    console.log("rerender original list")
+    resetList()
+    getList()
+  }
 }
 
 // Renderings ---------------------------------------
@@ -79,8 +85,7 @@ function renderList(movie) {
   div.appendChild(checkbox)
   card.appendChild(div)
 
-  div.addEventListener("click", handleCheck) // make checkbox checked if clicked here too
-  // checkbox.addEventListener("change", () => console.log("checked"))
+  div.addEventListener("click", handleCheck)
   
   const h3 = document.createElement("h3")
   h3.innerText = movie.title
@@ -90,7 +95,6 @@ function renderList(movie) {
   h4.innerText = `${movie.release_date} • ${movie.director}`
   card.appendChild(h4)
 
-  // console.log(card)
   card.addEventListener("click", handleClick)
   cardsContainer.appendChild(card)
 }
@@ -133,8 +137,7 @@ function renderDetail(movie) {
   div.appendChild(checkbox)
   detailContainer.appendChild(div)
 
-  div.addEventListener("click", handleCheck) // make checkbox checked if clicked here too
-  // checkbox.addEventListener("click", handleCheck)
+  div.addEventListener("click", handleCheck)
 
   const h2 = document.createElement("h2")
   h2.innerText = movie.title
@@ -178,7 +181,6 @@ function getList() {
   })
   .then(response => response.json())
   .then(movieData => {
-    // console.log(movieData)
     movieData.forEach(movie => {
       renderList(movie)
     })
@@ -223,5 +225,4 @@ function updateWatched(id) {
     body: JSON.stringify({"watched": checked})
   })
   .then(res => res.json())
-  // console.log(`${id}: ${checked}`)
 }
