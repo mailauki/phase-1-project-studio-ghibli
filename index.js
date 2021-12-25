@@ -24,7 +24,7 @@ function handleCheck(e) {
     checkedId.id = "checked"
   }
   else {checkedId.id = ""}
-  console.log(checked)
+  // console.log(checked)
 }
 
 function handleFilter(e) {
@@ -217,12 +217,18 @@ function resetDetail() {
 
 function updateWatched(id) {
   checked = !checked
+  if(checked === true) {
+    formData = {"watched": true}
+  }
+  else {
+    formData = {"watched": false}
+  }
   fetch(`http://localhost:3000/movies/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({"watched": checked})
+    body: JSON.stringify(formData)
   })
   .then(res => res.json())
 }
