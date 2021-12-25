@@ -12,20 +12,31 @@ let checked;
 function handleClick(e) {
   // console.log("clicked")
   // console.log(e.target.parentNode)
-  console.log(e.currentTarget)
+  // console.log(e.currentTarget)
   let id = e.currentTarget.id
   // console.log(id)
   getDetail(id)
 }
 
 function handleCheck(e) {
-  console.log("clicked")
+  // console.log("clicked")
   const checkedId = e.currentTarget.querySelector("button")
-  console.log(checkedId)
-  if (checkedId.id === "checked") {
-    checkedId.id = ""
+  // console.log(checkedId)
+  // console.log(e.currentTarget.id)
+  updateWatched(e.currentTarget.id)
+  // if (checkedId.id === "checked") {
+  //   checkedId.id = ""
+  //   checked = false
+  // }
+  // else {
+  //   checkedId.id = "checked"
+  //   checked = true
+  // }
+  if(checked === true) {
+    checkedId.id = "checked"
   }
-  else {checkedId.id = "checked"}
+  else {checkedId.id = ""}
+  console.log(checked)
 }
 
 // Renderings ---------------------------------------
@@ -54,6 +65,17 @@ function renderList(movie) {
   const check = document.createElement("img")
   check.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/61/61141.png")
   checkbox.appendChild(check)
+  fetch(`http://localhost:3000/movies/${movie.id}`)
+  .then(res => res.json())
+  .then(movieData => {
+    checked = movieData.watched
+    if(checked === true) {
+      checkbox.id = "checked"
+    }
+    else {
+      checkbox.id = ""
+    }
+  })
   div.appendChild(checkbox)
   card.appendChild(div)
 
@@ -97,6 +119,17 @@ function renderDetail(movie) {
   const check = document.createElement("img")
   check.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/61/61141.png")
   checkbox.appendChild(check)
+  fetch(`http://localhost:3000/movies/${movie.id}`)
+  .then(res => res.json())
+  .then(movieData => {
+    checked = movieData.watched
+    if(checked === true) {
+      checkbox.id = "checked"
+    }
+    else {
+      checkbox.id = ""
+    }
+  })
   div.appendChild(checkbox)
   detailContainer.appendChild(div)
 
@@ -146,7 +179,9 @@ function getList() {
   .then(response => response.json())
   .then(movieData => {
     // console.log(movieData)
-    movieData.forEach(movie => renderList(movie))
+    movieData.forEach(movie => {
+      renderList(movie)
+    })
   })
 }
 
@@ -163,9 +198,30 @@ function getDetail(id) {
     renderDetail(movieData)
   })
 }
+
+function resetList() {
+  const cards = document.querySelector("#cards-container")
+  while(cards.firstChild) {
+    cards.removeChild(cards.firstChild)
+  }
+}
+
 function resetDetail() {
   const detail = document.querySelector("#detail-container")
   while (detail.firstChild) {
     detail.removeChild(detail.firstChild)
   }
+}
+
+function updateWatched(id) {
+  checked = !checked
+  fetch(`http://localhost:3000/movies/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({"watched": checked})
+  })
+  .then(res => res.json())
+  // console.log(`${id}: ${checked}`)
 }
