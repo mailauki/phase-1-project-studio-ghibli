@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("dom loaded")
   getList()
   getDetail("2baf70d1-42bb-4437-b551-e5fed5a87abe")
+  // isMatch()
 
   const filter = document.querySelector("#filter")
   filter.addEventListener("click", handleFilter)
@@ -13,6 +14,7 @@ let checked;
 // Event Handlers -----------------------------------
 function handleClick(e) {
   let id = e.currentTarget.id
+  console.log(e.currentTarget)
   getDetail(id)
 }
 
@@ -32,7 +34,6 @@ function handleFilter(e) {
   const cards = document.querySelectorAll(".card")
   const cardsArray = [...cards]
   if(e.target.innerText === "Watched") {
-    console.log("rerender list based on checked")
     cardsArray.forEach(card => {
       card.style = "display: intitial;"
       if(card.querySelector("button").id !== "checked") {
@@ -41,7 +42,6 @@ function handleFilter(e) {
     })
   }
   else if(e.target.innerText !== "All" && "Watched") {
-    console.log("rerender list by director selected")
     cardsArray.forEach(card => {
       const director = card.querySelector("h4").innerText
       if(director === e.target.innerText) {
@@ -51,9 +51,19 @@ function handleFilter(e) {
     })
   }
   else {
-    console.log("rerender original list")
     cardsArray.forEach(card => card.style = "display: intial;")
   }
+}
+
+function isMatch(detailId) {
+  const cardArray = [...(document.querySelectorAll(".card"))]
+  cardArray.forEach(card => {
+    console.log(card)
+    if(card.id === detailId) {
+      card.classList.add("selected")
+    }
+    else {card.classList.remove("selected")}
+  })
 }
 
 // Renderings ---------------------------------------
@@ -189,6 +199,9 @@ function renderDetail(movie) {
   const description = document.createElement("p")
   description.innerText = movie.description
   detailContainer.appendChild(description)
+
+  // const cardArray = [...(document.querySelectorAll(".card"))]
+  isMatch(div.id)
 }
 
 // Fetch Requests -----------------------------------

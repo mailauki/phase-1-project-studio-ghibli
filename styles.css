@@ -22,14 +22,16 @@ header h1 {
 }
 #list-container {
   width: 50%;
+  /* margin-right: 20px; */
 }
 
 /* Cards */
 #cards-container {
-  width: 100%;
+  width: 90%;
+  /* margin: 0 5px; */
   display: grid;
   grid-template-columns: repeat(3, minmax(140px, 1fr)); /* make 3 when larger screen 2 with smaller ? */
-  /* gap: 10px; */
+  gap: 5px;
 }
 .card {
   padding: 10px;
@@ -71,8 +73,8 @@ header h1 {
   top: 20px;
 }
 .selected {
-  width: 160px;
-  padding: 0;
+  min-width: 140px;
+  padding: 5px;
   color: #fff;
   background-color: #565656;
 }
@@ -201,7 +203,7 @@ header h1 {
   top: 0;
   z-index: 4;
   background-color: #333;
-  padding: 20px 0 0 0;
+  padding: 20px 20px 0 0;
   margin: -20px 0 10px 0;
   width: 100%;
 }
