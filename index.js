@@ -14,20 +14,29 @@ let checked;
 // Event Handlers -----------------------------------
 function handleClick(e) {
   let id = e.currentTarget.id
-  console.log(e.currentTarget)
   getDetail(id)
 }
 
 function handleCheck(e) {
-  const checkedBtn = e.currentTarget.querySelector("button")
   updateWatched(e.currentTarget.id)
-  if(checked === true) {
-    checkedBtn.id = "checked"
-  }
-  else {checkedBtn.id = ""}
-  console.log(checkedBtn)
-  // add refreshing list if detail is clicked
-  // console.log(checked)
+
+  const detailCheck = document.querySelector("#detail-container").querySelector(".checkbox")
+  const cardChecks = document.querySelector("#cards-container").querySelectorAll(".checkbox")
+  const cardChecksArray = [...cardChecks]
+  const detailCheckedBtn = detailCheck.querySelector("button")
+
+  cardChecksArray.forEach(cardCheck => {
+    if(cardCheck.id === detailCheck.id) {
+      if(checked === true) {
+        cardCheck.querySelector("button").id = "checked"
+        detailCheckedBtn.id = "checked"
+      }
+      else {
+        cardCheck.querySelector("button").id = ""
+        detailCheckedBtn.id = ""
+      }
+    }
+  })
 }
 
 function handleFilter(e) {
@@ -58,7 +67,6 @@ function handleFilter(e) {
 function isMatch(detailId) {
   const cardArray = [...(document.querySelectorAll(".card"))]
   cardArray.forEach(card => {
-    console.log(card)
     if(card.id === detailId) {
       card.classList.add("selected")
     }
@@ -200,7 +208,6 @@ function renderDetail(movie) {
   description.innerText = movie.description
   detailContainer.appendChild(description)
 
-  // const cardArray = [...(document.querySelectorAll(".card"))]
   isMatch(div.id)
 }
 
