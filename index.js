@@ -4,8 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
   getDetail("2baf70d1-42bb-4437-b551-e5fed5a87abe")
 
   const filter = document.querySelector("#filter")
-  // const select = filter.querySelector("select")
-  // select.addEventListener("change", handleFilter)
   filter.addEventListener("click", handleFilter)
 })
 
@@ -36,6 +34,7 @@ function handleFilter(e) {
   if(e.target.innerText === "Watched") {
     console.log("rerender list based on checked")
     cardsArray.forEach(card => {
+      card.style = "display: intitial;"
       if(card.querySelector("button").id !== "checked") {
         card.style = "display: none;"
       }
@@ -46,16 +45,14 @@ function handleFilter(e) {
     cardsArray.forEach(card => {
       const director = card.querySelector("h4").innerText
       if(director === e.target.innerText) {
-        // console.log(card)
-        console.log("rendered hayao miyazaki")
+        card.style = "display: intitial;"
       }
       else {card.style = "display: none;"}
     })
   }
   else {
     console.log("rerender original list")
-    resetList()
-    getList()
+    cardsArray.forEach(card => card.style = "display: intial;")
   }
 }
 
