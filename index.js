@@ -4,8 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
   getDetail("2baf70d1-42bb-4437-b551-e5fed5a87abe")
 
   const filter = document.querySelector("#filter")
-  const select = filter.querySelector("select")
-  select.addEventListener("change", handleFilter)
+  // const select = filter.querySelector("select")
+  // select.addEventListener("change", handleFilter)
+  filter.addEventListener("click", handleFilter)
 })
 
 // Query Selectors ----------------------------------
@@ -18,24 +19,37 @@ function handleClick(e) {
 }
 
 function handleCheck(e) {
-  const checkedId = e.currentTarget.querySelector("button")
+  const checkedBtn = e.currentTarget.querySelector("button")
   updateWatched(e.currentTarget.id)
   if(checked === true) {
-    checkedId.id = "checked"
+    checkedBtn.id = "checked"
   }
-  else {checkedId.id = ""}
+  else {checkedBtn.id = ""}
+  console.log(checkedBtn)
+  // add refreshing list if detail is clicked
   // console.log(checked)
 }
 
 function handleFilter(e) {
-  if(e.target.value === "watched") {
+  const cards = document.querySelectorAll(".card")
+  const cardsArray = [...cards]
+  if(e.target.innerText === "Watched") {
     console.log("rerender list based on checked")
-    const cards = document.querySelectorAll(".card")
-    const cardsArray = [...cards]
     cardsArray.forEach(card => {
       if(card.querySelector("button").id !== "checked") {
         card.style = "display: none;"
       }
+    })
+  }
+  else if(e.target.innerText !== "All" && "Watched") {
+    console.log("rerender list by director selected")
+    cardsArray.forEach(card => {
+      const director = card.querySelector("h4").innerText
+      if(director === e.target.innerText) {
+        // console.log(card)
+        console.log("rendered hayao miyazaki")
+      }
+      else {card.style = "display: none;"}
     })
   }
   else {
@@ -91,9 +105,18 @@ function renderList(movie) {
   h3.innerText = movie.title
   card.appendChild(h3)
 
+  const info = document.createElement("div")
+  info.id = "info"
+  const h5 = document.createElement("h5")
+  h5.innerText = movie.release_date
+  info.appendChild(h5)
+  const span = document.createElement("span")
+  span.innerText = " • "
+  info.appendChild(span)
   const h4 = document.createElement("h4")
-  h4.innerText = `${movie.release_date} • ${movie.director}`
-  card.appendChild(h4)
+  h4.innerText = movie.director
+  info.appendChild(h4)
+  card.appendChild(info)
 
   card.addEventListener("click", handleClick)
   cardsContainer.appendChild(card)

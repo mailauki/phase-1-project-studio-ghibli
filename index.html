@@ -9,19 +9,28 @@
   <body>
     <header>
       <h1>Studio Ghibli</h1>
-      <form style="display: none;">
-        <!-- add a sorting searchbar here -->
-      </form>
     </header>
     <div id="content-container">
       <div id="list-container">
         <div id="filter">
-          <span>Filter By: </span>
-          <select>
-            <option> </option>
-            <option value="watched">Watched</option>
-            <option value="all">All</option>
-          </select>
+          <!-- <span>Filter By: </span> -->
+          <ul id="dropdown">
+            <li>Filter By: <span> &#9662;</span>
+              <ul class="dropdown">
+                <li>All</li>
+                <li>Watched</li>
+                <li>Director <span> &#9662;</span>
+                  <ul class="sub-dropdown">
+                    <li>Hayao Miyazaki</li>
+                    <li>Isao Takahata</li>
+                    <li>Yoshifumi Kondō</li>
+                    <li>Hiroyuki Morita</li>
+                    <li>Gorō Miyazaki</li>
+                  </ul>
+                </li>
+            </li>
+              </ul>
+          </ul>
         </div>
         <div id="cards-container">
           <!-- movie cards go here -->
