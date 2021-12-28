@@ -53,7 +53,17 @@ function handleCheck(e) {
 function handleFilter(e) {
   const cards = document.querySelectorAll(".card")
   const cardsArray = [...cards]
-  if(e.target.innerText === "Watched") {
+  const dropdown = document.querySelector(".dropdown")
+
+  if(e.target.id === "filter-by") {
+    dropdown.style = "display: block; margin-top: 18px;"
+  }
+  else if(e.target.innerText === "All"){
+    dropdown.style = "display: none;"
+    cardsArray.forEach(card => card.style = "display: intial;")
+  }
+  else if(e.target.innerText === "Watched") {
+    dropdown.style = "display: none;"
     cardsArray.forEach(card => {
       card.style = "display: intitial;"
       if(card.querySelector("button").id !== "checked") {
@@ -62,6 +72,7 @@ function handleFilter(e) {
     })
   }
   else if(e.target.innerText !== "All" && "Watched") {
+    dropdown.style = "display: none;"
     cardsArray.forEach(card => {
       const director = card.querySelector("h4").innerText
       if(director === e.target.innerText) {
@@ -69,9 +80,6 @@ function handleFilter(e) {
       }
       else {card.style = "display: none;"}
     })
-  }
-  else {
-    cardsArray.forEach(card => card.style = "display: intial;")
   }
 }
 
@@ -96,7 +104,7 @@ function renderList(movie) {
   const rating = document.createElement("div")
   rating.id = "rating"
   const p = document.createElement("p")
-  p.innerText = `☆ ${movie.rt_score}` // ★ or ☆ ?
+  p.innerText = `★ ${movie.rt_score}` // ★ or ☆ ?
   rating.appendChild(p)
   card.appendChild(rating)
 
@@ -154,7 +162,7 @@ function renderDetail(movie) {
   const rating = document.createElement("div")
   rating.id = "rating"
   const p = document.createElement("p")
-  p.innerText = `☆ ${movie.rt_score}`
+  p.innerText = `★ ${movie.rt_score}`
   rating.appendChild(p)
   detailContainer.appendChild(rating)
 
