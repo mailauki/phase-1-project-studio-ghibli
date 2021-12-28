@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("dom loaded")
   getList()
   getDetail("2baf70d1-42bb-4437-b551-e5fed5a87abe")
-  // isMatch()
 
   const filter = document.querySelector("#filter")
   filter.addEventListener("click", handleFilter)
@@ -14,35 +13,41 @@ let checked;
 // Event Handlers -----------------------------------
 function handleClick(e) {
   let id = e.currentTarget.id
-  console.log(e.target.parentNode.classList.contains("card"))
-
-  if(e.target.parentNode.classList.contains("card")) {
-    console.log("is card")
+  if(e.target.parentNode.classList.contains("card")) { // checks if click target is card not checkbox
     getDetail(id)
   }
-  else {console.log("not card")}
 }
 
 function handleCheck(e) {
-  updateWatched(e.currentTarget.id)
-
   const detailCheck = document.querySelector("#detail-container").querySelector(".checkbox")
   const cardChecks = document.querySelector("#cards-container").querySelectorAll(".checkbox")
   const cardChecksArray = [...cardChecks]
   const detailCheckedBtn = detailCheck.querySelector("button")
 
-  cardChecksArray.forEach(cardCheck => {
-    if(cardCheck.id === detailCheck.id) {
-      if(checked === true) {
-        cardCheck.querySelector("button").id = "checked"
-        detailCheckedBtn.id = "checked"
+  if(e.currentTarget.classList.contains("checkbox")) { // checks if click target is checkbox
+    updateWatched(e.currentTarget.id)
+    cardChecksArray.forEach(cardCheck => {
+      if(e.currentTarget.id === cardCheck.id) { // matches click target and list to check of correct checkbox
+        if(checked === true) {
+          e.currentTarget.querySelector("button").id = "checked"
+        }
+        else {
+          e.currentTarget.querySelector("button").id = ""
+        }
+        if(cardCheck.id === detailCheck.id) { // syncs check of card and detail
+          if(checked === true) {
+            cardCheck.querySelector("button").id = "checked"
+            detailCheckedBtn.id = "checked"
+          }
+          else {
+            cardCheck.querySelector("button").id = ""
+            detailCheckedBtn.id = ""
+          }
+        }
       }
-      else {
-        cardCheck.querySelector("button").id = ""
-        detailCheckedBtn.id = ""
-      }
-    }
-  })
+    })
+  }
+    
 }
 
 function handleFilter(e) {
