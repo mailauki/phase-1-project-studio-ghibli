@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("dom loaded")
   getList()
   getDetail("2baf70d1-42bb-4437-b551-e5fed5a87abe")
 
@@ -12,7 +11,7 @@ let checked;
 
 // Event Handlers -----------------------------------
 function handleClick(e) {
-  let id = e.currentTarget.id
+  let id = e.currentTarget.querySelector(".checkbox").id
   if(e.target.parentNode.classList.contains("card")) { // checks if click target is card not checkbox
     getDetail(id)
   }
@@ -93,7 +92,8 @@ function handleFilter(e) {
 function isMatch(detailId) { // highlights selected card
   const cardArray = [...(document.querySelectorAll(".card"))]
   cardArray.forEach(card => {
-    if(card.id === detailId) {
+    let cardId = card.querySelector(".checkbox").id
+    if(cardId === detailId) {
       card.classList.add("selected")
     }
     else {card.classList.remove("selected")}
@@ -105,7 +105,6 @@ function renderList(movie) {
   const cardsContainer = document.querySelector("#cards-container")
 
   const card = document.createElement("div")
-  card.id = movie.id
   card.classList.add("card")
 
   const rating = document.createElement("div")
@@ -126,10 +125,10 @@ function renderList(movie) {
   const check = document.createElement("img")
   check.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/61/61141.png")
   checkbox.appendChild(check)
-  fetch(`http://localhost:3000/movies/${movie.id}`)
+  fetch(`http://localhost:3000/movies/${movie.id}`) // checks json for watched values
   .then(res => res.json())
-  .then(movieData => {
-    checked = movieData.watched
+  .then(jsonData => {
+    checked = jsonData.watched
     if(checked === true) {
       checkbox.id = "checked"
     }
@@ -165,7 +164,7 @@ function renderList(movie) {
 
 function renderDetail(movie) {
   const detailContainer = document.querySelector("#detail-container")
-  
+
   const rating = document.createElement("div")
   rating.id = "rating"
   const p = document.createElement("p")
@@ -187,10 +186,10 @@ function renderDetail(movie) {
   const check = document.createElement("img")
   check.setAttribute("src", "https://cdn-icons-png.flaticon.com/512/61/61141.png")
   checkbox.appendChild(check)
-  fetch(`http://localhost:3000/movies/${movie.id}`)
+  fetch(`http://localhost:3000/movies/${movie.id}`) // checks json for watched values
   .then(res => res.json())
-  .then(movieData => {
-    checked = movieData.watched
+  .then(jsonData => {
+    checked = jsonData.watched
     if(checked === true) {
       checkbox.id = "checked"
     }
@@ -267,13 +266,6 @@ function getDetail(id) {
   })
 }
 
-function resetList() {
-  const cards = document.querySelector("#cards-container")
-  while(cards.firstChild) {
-    cards.removeChild(cards.firstChild)
-  }
-}
-
 function resetDetail() {
   const detail = document.querySelector("#detail-container")
   while (detail.firstChild) {
@@ -282,7 +274,7 @@ function resetDetail() {
 }
 
 function updateWatched(id) {
-  checked = !checked
+  checked = !checked // changes variable checked value
   if(checked === true) {
     formData = {"watched": true}
   }
