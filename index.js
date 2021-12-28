@@ -54,16 +54,22 @@ function handleFilter(e) {
   const cards = document.querySelectorAll(".card")
   const cardsArray = [...cards]
   const dropdown = document.querySelector(".dropdown")
+  const activeFilter = document.querySelector("#active-filter")
 
   if(e.target.id === "filter-by") {
     dropdown.style = "display: block; margin-top: 18px;"
   }
+  else if(e.target.id === "director") {
+    console.log("not a button")
+  }
   else if(e.target.innerText === "All"){
     dropdown.style = "display: none;"
+    activeFilter.innerText = e.target.innerText
     cardsArray.forEach(card => card.style = "display: intial;")
   }
   else if(e.target.innerText === "Watched") {
     dropdown.style = "display: none;"
+    activeFilter.innerText = e.target.innerText
     cardsArray.forEach(card => {
       card.style = "display: intitial;"
       if(card.querySelector("button").id !== "checked") {
@@ -73,6 +79,7 @@ function handleFilter(e) {
   }
   else if(e.target.innerText !== "All" && "Watched") {
     dropdown.style = "display: none;"
+    activeFilter.innerText = e.target.innerText
     cardsArray.forEach(card => {
       const director = card.querySelector("h4").innerText
       if(director === e.target.innerText) {
@@ -83,7 +90,7 @@ function handleFilter(e) {
   }
 }
 
-function isMatch(detailId) {
+function isMatch(detailId) { // highlights selected card
   const cardArray = [...(document.querySelectorAll(".card"))]
   cardArray.forEach(card => {
     if(card.id === detailId) {

@@ -270,3 +270,6 @@ li span {
   padding: 4px;
   margin-top: -4px;
 }
+#active-filter {
+  float: inherit;
+}
