@@ -14,7 +14,13 @@ let checked;
 // Event Handlers -----------------------------------
 function handleClick(e) {
   let id = e.currentTarget.id
-  getDetail(id)
+  console.log(e.target.parentNode.classList.contains("card"))
+
+  if(e.target.parentNode.classList.contains("card")) {
+    console.log("is card")
+    getDetail(id)
+  }
+  else {console.log("not card")}
 }
 
 function handleCheck(e) {
