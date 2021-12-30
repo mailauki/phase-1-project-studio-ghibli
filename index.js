@@ -46,7 +46,6 @@ function handleCheck(e) {
       }
     })
   }
-    
 }
 
 function handleFilter(e) {
@@ -72,6 +71,16 @@ function handleFilter(e) {
     cardsArray.forEach(card => {
       card.style = "display: intitial;"
       if(card.querySelector("button").id !== "checked") {
+        card.style = "display: none;"
+      }
+    })
+  }
+  else if(e.target.innerText === "Not Watched") {
+    dropdown.style = "display: none;"
+    activeFilter.innerText = e.target.innerText
+    cardsArray.forEach(card => {
+      card.style = "display: intitial;"
+      if(card.querySelector("button").id === "checked") {
         card.style = "display: none;"
       }
     })
